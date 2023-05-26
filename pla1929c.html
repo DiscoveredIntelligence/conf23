@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      .center {
+        margin: auto;
+        width: 60%;
+        padding: 10px;
+      }
+    </style>
+
+  <body class="center">
+    <div></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['sankey']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Resource');
+        data.addColumn('string', 'Data Source');
+        data.addColumn('number', 'Weight');
+        data.addRows([
+            // Data sources
+		['GWorkspace','Cloud Logging', 1],
+		['VM Instances','Cloud Logging', 1],
+		['VM Instances','Cloud Monitoring', 2],
+		['Cloud Security','Cloud Pub/Sub', 1],
+		['Cloud Assets','Cloud Pub/Sub', 1],
+		['Cloud Assets','Cloud Storage', 2],
+
+            // Google monitor section
+		['Cloud Logging','Cloud Pub/Sub', 2],
+		['Cloud Monitoring','Cloud Functions', 1],
+
+            // Google collect section
+		['Cloud Pub/Sub','Cloud Dataflow', 2],
+		['Cloud Pub/Sub','Cloud Functions', 1],
+		['Cloud Storage','Cloud Functions', 1],
+
+            //To Splunk
+		['Cloud Storage','Splunk Add-on', 1],
+		['Cloud Monitoring','Splunk Add-on', 1],
+		['Cloud Pub/Sub','Splunk Add-on', 1],
+		['Cloud Billing','Splunk Add-on', 1],
+		['Cloud Dataflow','HEC', 2],
+		['Cloud Functions','HEC', 3],
+        ]);
+
+        // Sets chart options.
+        var options = {
+            sankey: {
+                node: {
+                    interactivity: true,
+                }
+            },
+            tooltip : {
+                trigger: 'focus'
+            }
+        };
+
+        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('sankey_basic'));
+        chart.draw(data, options);
+      }
+    </script>
+    <h1>Getting Google Cloud Platform Data Into Splunk</h1>
+    <div id="sankey_basic" style="width: 1000px; height: 600px;"></div>
+  </body>
+</html>
